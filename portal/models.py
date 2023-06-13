@@ -21,10 +21,6 @@ class Author(models.Model):  # Сущность "автор"
             for comment in comments:
                 self.rating += comment.rating
 
-        # comments_to_authors_posts = Comment.objects.filter(post=Post.objects.filter)
-        # for comment in comments_to_authors_posts:
-        #     self.rating += comment.rating
-
         self.save()
 
 
