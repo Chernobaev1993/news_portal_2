@@ -1,0 +1,15 @@
+{% extends 'default.html' %}
+
+{% block content %}
+<h1>Новость</h1>
+<hr>
+
+<!--В HTML-форме для фильтров в мы указывали method="get", а для передачи информации, -->
+<!--которая изменяет состояние базы данных (создает, изменяет, удаляет данные), будем указывать method="post".-->
+<form action="" method="post">
+    <!--Тег нужен для того, чтобы хакеры не взломали сайт-->
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save" />
+</form>
+{% endblock content %}

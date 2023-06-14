@@ -23,9 +23,15 @@ class Author(models.Model):  # Сущность "автор"
 
         self.save()
 
+    def __str__(self):
+        return self.user.username
+
 
 class Category(models.Model):  # Сущность "категория"
     name = models.CharField(max_length=255, unique=True)  # Название категории
+
+    def __str__(self):
+        return self.name
 
 
 class Post(models.Model):  # Сущность "статься/пост"
@@ -57,6 +63,9 @@ class Post(models.Model):  # Сущность "статься/пост"
             return text[:124] + '...'
         else:
             return text
+
+    def __str__(self):
+        return f'{self.title}'
 
 
 class PostCategory(models.Model):  # Промежуточная таблица для связи M2M между постами и категориями
