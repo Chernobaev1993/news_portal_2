@@ -19,5 +19,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('news/', include('portal.urls'))  # по адресу posts/ мы будем открывать адреса из приложения portal
+    path('news/', include('portal.urls')),  # по адресу posts/ мы будем открывать адреса из приложения portal
+    path('', include('protect.urls')),
+    path('sign/', include('sign.urls')),
+    path('accounts/', include('allauth.urls')),
 ]

@@ -46,19 +46,22 @@ class PostDetail(DetailView):
     # pk_url_kwarg = 'id'
 
 
-class PostCreate(CreateView):
+class PostCreate(CreateView, PermissionRequiredMixin):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
+    permission_required = ('portal.add_post',)
 
 
-class PostUpdate(UpdateView):
+class PostUpdate(UpdateView, PermissionRequiredMixin,):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
+    permission_required = ('portal.edit_post',)
 
 
-class PostDelete(DeleteView):
+class PostDelete(DeleteView, PermissionRequiredMixin,):
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('news_list')
+    permission_required = ('portal.delete_post',)
