@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -46,22 +47,22 @@ class PostDetail(DetailView):
     # pk_url_kwarg = 'id'
 
 
-class PostCreate(CreateView, PermissionRequiredMixin):
+class PostCreate(CreateView, PermissionRequiredMixin, LoginRequiredMixin,):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
     permission_required = ('portal.add_post',)
 
 
-class PostUpdate(UpdateView, PermissionRequiredMixin,):
+class PostUpdate(UpdateView, PermissionRequiredMixin, LoginRequiredMixin,):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
     permission_required = ('portal.edit_post',)
 
 
-class PostDelete(DeleteView, PermissionRequiredMixin,):
+class PostDelete(DeleteView, PermissionRequiredMixin, LoginRequiredMixin,):
     model = Post
     template_name = 'post_delete.html'
-    success_url = reverse_lazy('news_list')
+    success_url = reverse_lazy('post_list')
     permission_required = ('portal.delete_post',)
