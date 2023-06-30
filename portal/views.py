@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 # Импортируем дженерики для представлений
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post
+from .models import Post, Category, Subscriber
 from .filters import PostFilter
 from .forms import PostForm
 
@@ -37,6 +38,18 @@ class PostListSearch(PostList, ListView):
         self.filterset = PostFilter(self.request.GET, queryset)
         return self.filterset.qs  # Возвращаем из функции отфильтрованный список товаров
 
+    def post(self, request, *args, **kwargs):
+        selected_category = self.request.GET.get('category', False)
+        category = Category.objects.get(pk=selected_category)
+
+        if not Subscriber.objects.filter(user_id=self.request.user.pk).exists():
+            Subscriber.objects.create(user_id=self.request.user.pk)
+
+        subscriber = Subscriber.objects.get(user_id=self.request.user.pk)
+        subscriber.category.add(category)
+
+        return HttpResponseRedirect("/news/")
+
 
 class PostDetail(DetailView):
     model = Post  # Модель всё та же, но мы хотим получать информацию по отдельной новости
@@ -66,3 +79,10 @@ class PostDelete(DeleteView, PermissionRequiredMixin, LoginRequiredMixin,):
     template_name = 'post_delete.html'
     success_url = reverse_lazy('post_list')
     permission_required = ('portal.delete_post',)
+
+
+class CategoryList(ListView):
+    model = Category
+    template_name = 'categories_list.html'
+    ordering = 'name'
+    context_object_name = 'categories'

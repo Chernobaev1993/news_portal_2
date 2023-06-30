@@ -1,0 +1,35 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'default.html' %}
+
+<!--Регистрируем наши собственные фильтры, которые находятся в templatetags-->
+{% load custom_filters %}
+{% load custom_tags %}
+
+<!-- Название у нас будет products -->
+{% block title %}
+    Categories
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+    <h1>Все категории</h1>
+    {% block search %}{% endblock search %}
+    <hr>
+    {% if categories %}
+        <table border="1"> <!-- Начинаем описывать таблицу -->
+            <tr> <!-- Добавляем строку -->
+                <th>Наименование</th>
+            </tr> <!-- Не забываем закрыть HTML-тег строки -->
+
+            {% for cat in categories %}
+            <tr>
+                <td>{{ cat.name }}</td>
+            </tr>
+            {% endfor %}
+
+        </table> <!-- ... и таблицы -->
+    {% else %}
+        <h2>Категорий нет!</h2>
+    {% endif %}
+
+{% endblock content %}

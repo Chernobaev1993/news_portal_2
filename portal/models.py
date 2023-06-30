@@ -91,3 +91,11 @@ class Comment(models.Model):  # Сущность "комментарий"
     def dislike(self):  # Dislike, уменьшает рейтинг на 1
         self.rating -= 1
         self.save()
+
+
+class Subscriber(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    category = models.ManyToManyField(Category)
+
+    def __str__(self):
+        return f'{User.objects.get(pk=self.user_id)}'
